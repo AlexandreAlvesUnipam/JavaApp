@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: vendas_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: <sua_senha>
+      POSTGRES_DB: vendasdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
