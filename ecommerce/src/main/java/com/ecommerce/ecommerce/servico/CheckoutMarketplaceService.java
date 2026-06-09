@@ -24,11 +24,11 @@ public class CheckoutMarketplaceService {
     @Transactional // Garante que tudo seja salvo junto (ou desfeito em caso de erro)
     public void processarCompra(Pedido pedido, Pagamento formaDePagamento) {
         
-        // Polimorfisom
+        // Polimorfismo
         BigDecimal valorFinal = formaDePagamento.calcularValorFinal();
         Cliente comprador = pedido.getCliente();
 
-        // Encapsulamento em ação: tentamos debitar. 
+        // Encapsulamento: tentamos debitar. 
         // Se não houver limite, a própria classe Cliente lança o erro.
         comprador.debitarLimite(valorFinal);
 

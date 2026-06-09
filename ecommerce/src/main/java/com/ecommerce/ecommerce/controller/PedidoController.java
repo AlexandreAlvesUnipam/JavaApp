@@ -1,15 +1,20 @@
 package com.ecommerce.ecommerce.controller;
 
-import com.ecommerce.ecommerce.modelo.*;
+import java.math.BigDecimal;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ecommerce.ecommerce.modelo.Cliente;
+import com.ecommerce.ecommerce.modelo.Pagamento;
+import com.ecommerce.ecommerce.modelo.PagamentoPix;
+import com.ecommerce.ecommerce.modelo.Pedido;
 import com.ecommerce.ecommerce.repositorio.ClienteRepository;
 import com.ecommerce.ecommerce.repositorio.PedidoRepository;
 import com.ecommerce.ecommerce.servico.CheckoutMarketplaceService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.math.BigDecimal;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/pedidos")
@@ -32,18 +37,18 @@ public class PedidoController {
     public ResponseEntity<String> simularCompraCompleta() {
         try {
             // 1. Criamos um cliente com 500 reais de limite e salvamos
-            Cliente joao = new Cliente("João Fazendeiro", new BigDecimal("500.00"));
+            Cliente joao = new Cliente("João", new BigDecimal("500.00"));
             clienteRepository.save(joao);
 
             // 2. Criamos o pedido e usamos a POO para adicionar itens
             Pedido novoPedido = new Pedido(joao);
-            novoPedido.adicionarItem("Saco de Ração 50kg", new BigDecimal("100.00"), 2); // Subtotal: 200
-            novoPedido.adicionarItem("Vacina Bovina", new BigDecimal("50.00"), 1);       // Subtotal: 50
+            novoPedido.adicionarItem("Liquidificador", new BigDecimal("200.00"), 2); // Subtotal: 200
+            novoPedido.adicionarItem("Livro: Introdução ao Java", new BigDecimal("50.00"), 1);       // Subtotal: 50
             // Valor total calculado pela classe Pedido = 250.00
             
             pedidoRepository.save(novoPedido);
 
-            // 3. Escolhemos a estratégia de pagamento via POO (Polimorfismo em ação)
+            // 3. Escolhemos a estratégia de pagamento via POO (Polimorfismo)
             // Pagamento PIX vai dar 5% de desconto. O total final cobrado será 237.50.
             Pagamento formaDePagamento = new PagamentoPix(novoPedido);
 

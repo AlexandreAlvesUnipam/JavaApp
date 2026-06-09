@@ -18,4 +18,7 @@
 - Verifique as dependências.
 
 **Execução**:
-- Execute o projeto java e verifique se os dados foram inseridos no banco.
+- Execute o projeto Java, através da classe principal;
+- Faça uma requisição POST para simular uma compra: `curl -X POST http://localhost:8080/api/pedidos/simular-compra`
+- Entre no container do banco para verificar se a compra foi registrada: `docker exec -it vendas_db psql -U admin -d vendasdb`
+- Execute a query: `SELECT * FROM tb_pedidos;`
